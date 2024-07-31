@@ -17,6 +17,11 @@ export const HostPage = () => {
         console.log(user);
         setPlayers(prevPlayers => [...prevPlayers, user])
     }
+
+    const onUserLeft = (removedPlayer) => {
+        console.log(removedPlayer);
+        setPlayers(prevPlayers => prevPlayers.filter(player => player != removedPlayer))
+    }
     
     socket.active && console.log('host socket active');
     socket.connected && console.log('host socket connected');
@@ -51,7 +56,7 @@ export const HostPage = () => {
             
             socket.off('connect', generateRoom)
             socket.off('user joined', onUserJoin)
-            socket.off('user le')
+            socket.off('user left', onUserLeft)
 
         };
     }, [socket,roomCode]);
