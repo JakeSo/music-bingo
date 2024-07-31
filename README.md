@@ -1,8 +1,27 @@
-# React + Vite
+# Music Bingo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A ReactJS app to play Music Bingo with your friends!
 
-Currently, two official plugins are available:
+## Table of Contents
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Technologies Used](#technologies-used)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Features
+
+- **Real-time Gameplay**: Play Music Bingo in real-time with friends.
+- **Spotify Integration**: Use your favorite Spotify playlists for the game.
+- **Interactive UI**: Enjoy a smooth and engaging user interface built with React JS.
+- **Responsive Design**: Play on any device, whether it's a desktop, tablet, or mobile.
+
+## Installation
+
+### Prerequisites
+
+- Node.js (v14 or higher)
+- npm (v6 or higher) or yarn (v1.22 or higher)
+- A Spotify Developer account and API credentials
