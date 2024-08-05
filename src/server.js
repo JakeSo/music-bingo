@@ -6,7 +6,6 @@ import axios from 'axios';
 import cors from 'cors';
 import { Server } from 'socket.io';
 import { createServer } from 'http';
-import { resolve } from 'path';
 import cookieParser from 'cookie-parser';
 const app = express();
 const server = createServer(app);
@@ -28,7 +27,7 @@ app.get('/login', (req, res) => {
 
     //Spotify Auth
     // var state = generateRandomString(16);
-    var scope = 'user-read-private user-read-email';
+    var scope = 'streaming user-read-private user-read-email';
 
     res.redirect('https://accounts.spotify.com/authorize?' +
         querystring.stringify({
@@ -188,12 +187,17 @@ io.on('connection', (socket) => {
         io.to(roomCode).emit('play song', song);
     });
 
-    socket.on('disconnect', () => {
+    socket.on('leaving room', () => {
+        console.log(socket.rooms);
         socket.rooms.forEach( room => {
             if (room != socket.id) {
                 socket.to(room).emit('user left', socket.id);
             }
         })
+    })
+
+    socket.on('disconnect', () => {
+        
         console.log('user disconnected');
     });
 });

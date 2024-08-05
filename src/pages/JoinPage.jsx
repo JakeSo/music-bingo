@@ -8,6 +8,11 @@ export const JoinPage = () => {
     
     const socket = createSocket();
 
+    window.onbeforeunload = () => {
+        
+        socket.emit('leaving room');
+    }
+
     const joinRoom = () => {
         if (roomCode && name) {
 

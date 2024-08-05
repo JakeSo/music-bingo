@@ -17,7 +17,10 @@ function App() {
     }, 
     {
       path: 'host',
-      element: <HostPage />
+      element: <HostPage />,
+      children: [{
+        
+      }]
     },
     {
       path: 'join',

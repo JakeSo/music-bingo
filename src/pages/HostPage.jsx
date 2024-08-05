@@ -10,7 +10,6 @@ export const HostPage = () => {
     const generateRoomCode = () => {
         return Math.random().toString(36).substring(2, 8).toUpperCase();
     };
-
     
 
     const onUserJoin = (user) => {
@@ -20,7 +19,7 @@ export const HostPage = () => {
 
     const onUserLeft = (removedPlayer) => {
         console.log(removedPlayer);
-        setPlayers(prevPlayers => prevPlayers.filter(player => player != removedPlayer))
+        setPlayers(prevPlayers => prevPlayers.filter(player => player.socketId != removedPlayer))
     }
     
     socket.active && console.log('host socket active');
@@ -33,6 +32,7 @@ export const HostPage = () => {
                 console.log('room created');
             });
             socket.on('user joined', onUserJoin);
+            socket.on('user left', onUserLeft);
         }
         const checkAuth = async () => {
             const response = await fetch('http://localhost:8888/verify', {
@@ -74,6 +74,7 @@ export const HostPage = () => {
                         {players.map(player => <div className="rounded-full bg-slate-600 text-white text-2xl p-5" key={player.socketId}>{player.name}</div>)}
                     </div>
                 </div>
+                {players && <input type="button" onClick={handleStartGame}>Start Game</input>}
             </div>
         </div>
     )
