@@ -1,18 +1,27 @@
-import React, { createContext, useState, useEffect } from 'react';
-import axios from 'axios';
-import Cookies from 'js-cookie';
+import { createContext, useState, useEffect} from 'react';
 const SpotifyAuthContext = createContext();
 
-const SpotifyAuthenticationProvider = ({ children }) => {
-  const [token, setToken] = useState(Cookies.get('spotifyToken'));
+const SpotifyAuthProvider = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const clientId = process.env.CLIENT_ID;
   const redirectUri = process.env.REDIRECT_URI;
   const scopes = 'user-read-private user-read-email';
 
   useEffect(() => {
-    const hash = window.location.hash;
-    let token = window.localStorage.getItem('spotifyToken');
-
+    const checkAuth = async () => {
+      const response = await fetch('http://localhost:8888/verify', {
+        credentials: 'include'
+      });
+      console.log(response);
+      if (response.status === 401) {
+          console.log('redirecting to login');
+          window.location.href = 'http://localhost:8888/login';
+          setIsAuthenticated(false);
+      } else {
+        setIsAuthenticated(true);
+      }
+    };
+  checkAuth();
     
   }, []);
 
@@ -21,15 +30,16 @@ const SpotifyAuthenticationProvider = ({ children }) => {
   };
 
   const logout = () => {
-    setToken(null);
-    window.localStorage.removeItem('spotifyToken');
+    
   };
 
   return (
-    <SpotifyAuthContext.Provider value={{ token, login, logout }}>
+    <SpotifyAuthContext.Provider value={{ isAuthenticated, login, logout }}>
       {children}
     </SpotifyAuthContext.Provider>
   );
 };
 
-export { SpotifyAuthenticationProvider, SpotifyAuthContext };
+
+
+export { SpotifyAuthProvider, SpotifyAuthContext };

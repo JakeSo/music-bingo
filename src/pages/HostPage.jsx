@@ -1,10 +1,14 @@
 import createSocket from "../socket";
 import { useState, useEffect } from "react";
+import useSpotifyAuthContext from "../hooks/useSpotifyAuthContext";
 export const HostPage = () => {
     //const [token, setToken] = useState(Cookies.get("authToken"))
     // const [refreshToken, setRefreshToken] = useState(Cookies.get("refreshToken"));
     const [roomCode, setRoomCode] = useState(null);
     const [players, setPlayers] = useState([]);
+
+    const { isAuthenticated, login} = useSpotifyAuthContext();
+
     const socket = createSocket();
 
     const generateRoomCode = () => {
@@ -34,23 +38,13 @@ export const HostPage = () => {
             socket.on('user joined', onUserJoin);
             socket.on('user left', onUserLeft);
         }
-        const checkAuth = async () => {
-            const response = await fetch('http://localhost:8888/verify', {
-              credentials: 'include'
-            });
-            console.log(response);
-            if (response.status === 401) {
-                socket.disconnect();
-                console.log('redirecting to login');
-                window.location.href = 'http://localhost:8888/login';
-            } else {
-                if (!roomCode) {     
-                    socket.connect();
-                    socket.on('connect', generateRoom)    
-                }
-            }
-          };
-        checkAuth();
+
+        if (!isAuthenticated){
+            login();
+        } else if (!roomCode) {
+            generateRoom();
+        }
+        
 
         return () => {
             
